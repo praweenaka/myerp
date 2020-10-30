@@ -30,6 +30,7 @@ function newent() {
     getdt();
 }
 
+
 function getdt() {
 
     xmlHttp = GetXmlHttpObject();
@@ -37,83 +38,35 @@ function getdt() {
         alert("Browser does not support HTTP Request");
         return;
     }
-
     var url = "CheckUsers.php";
-    url = url + "?Command=" + "getdt";
-    url = url + "&ls=" + "new";
+    var params ="Command="+"getdt";   
+    params=params+"&ls="+ "new";
 
-    xmlHttp.onreadystatechange = assign_dt;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
+    xmlHttp.open("POST", url, true);
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.setRequestHeader("Content-length", params.length);
+    xmlHttp.setRequestHeader("Connection", "close");
+    xmlHttp.onreadystatechange=assign_dt;
+    xmlHttp.send(params);
+
 
 }
 
 
 function assign_dt() {
+
     document.getElementById('itemdetails').innerHTML = xmlHttp.responseText;
-    var XMLAddress1;
 
-    if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete") {
-
-
-
-    }
 }
-
 
 function getcode(cdata, cdata1) {
 
 
     document.getElementById('user_name').value = cdata;
     document.getElementById('user_type').value = cdata1; 
-// hide();
+
     window.scrollTo(0, 0);
     
-}
-
-//function hide(){
-//    document.getElementById('pass1').hide;
-//    document.getElementById("pass2").hide;
-//}
-
-function select_permission()
-{
-
-    xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
-    {
-        alert("Browser does not support HTTP Request");
-        return;
-    }
-
-
-    var url = "assign_privilages_data.php";
-    url = url + "?Command=" + "select_permission";
-    url = url + "&user_name=" + document.getElementById("user_name").value;
-
-    xmlHttp.onreadystatechange = passsuppresult_select_permission;
-
-
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
-
-}
-
-function passsuppresult_select_permission()
-{
-    var XMLAddress1;
-
-    if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete")
-    {
-
-        XMLAddress1 = xmlHttp.responseXML.getElementsByTagName("balance_table");
-        document.getElementById('privi_table').innerHTML = XMLAddress1[0].childNodes[0].nodeValue;
-
-        XMLAddress1 = xmlHttp.responseXML.getElementsByTagName("mcount");
-        document.getElementById('mcount').value = XMLAddress1[0].childNodes[0].nodeValue;
-
-
-    }
 }
 
 function save_inv()
@@ -144,124 +97,57 @@ function save_inv()
             document.getElementById('msg_box').innerHTML = "<div class='alert alert-warning' role='alert'><span class='center-block'>Confirm Password  Not Entered</span></div>";
             return false;
         }
-      
-
         var url = "CheckUsers.php";
-        url = url + "?Command=" + "save_inv";
-        url = url + "&user_name=" + document.getElementById("user_name").value;
-    //    url = url + "&user_depart=" + document.getElementById("user_depart").value;
-        url = url + "&password=" + document.getElementById("pass1").value;
-        url = url + "&user_type=" + document.getElementById("user_type").value; 
+        var params ="Command="+"save_inv";   
+        params=params+"&user_name="+document.getElementById('user_name').value;
+        params=params+"&password="+document.getElementById('pass1').value;
+        params=params+"&user_type="+document.getElementById('user_type').value;
 
-        xmlHttp.onreadystatechange = passsuppresult_save_inv;
-        xmlHttp.open("GET", url, true);
-        xmlHttp.send(null);
+        xmlHttp.open("POST", url, true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("Content-length", params.length);
+        xmlHttp.setRequestHeader("Connection", "close");
+        xmlHttp.onreadystatechange=passsuppresult_save_inv;
+        xmlHttp.send(params);
 
+        document.getElementById('msg_box').innerHTML = "";
 
     }
 
 }
 
 
-function save_inv1()
-{
-    xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
-    {
-        alert("Browser does not support HTTP Request");
-        return;
-    }
-
-    var url = 'assign_privilages_data.php';
-    var params = 'Command=' + 'save_inv';
-
-    params = params + '&user_name=' + document.getElementById('user_name').value;
-    var i = 1;
-    while (i < document.getElementById("mcount").value) {
-        chkview = "chkview" + i;
-        chkfeed = "chkfeed" + i;
-        chkmod = "chkmod" + i;
-        chkprice = "chkprice" + i;
-
-        params = params + "&" + chkview + "=" + document.getElementById(chkview).checked;
-        params = params + "&" + chkfeed + "=" + document.getElementById(chkfeed).checked;
-        params = params + "&" + chkmod + "=" + document.getElementById(chkmod).checked;
-        params = params + "&" + chkprice + "=" + document.getElementById(chkprice).checked;
-
-        i = i + 1;
-    }
-    //alert(params);
-    xmlHttp.open("POST", url, true);
-
-    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlHttp.setRequestHeader("Content-length", params.length);
-    xmlHttp.setRequestHeader("Connection", "close");
-
-    xmlHttp.onreadystatechange = passsuppresult_save_inv;
-
-    xmlHttp.send(params);
+function deleteuser() {
 
 
 
-
-}
-
-
-
-function passsuppresult_save_inv()
-{
-    var XMLAddress1;
-
-    if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete")
-    {
-
-
-        if (xmlHttp.responseText == "Saved") {
-//            document.getElementById('msg_box').innerHTML = "<div class='alert alert-success' role='alert'><span class='center-block'>Saved</span></div>";
-            alert('Saved');
-            location.reload();
-
-//            setTimeout("location.reload(true);", 500);
-        } else {
-//            document.getElementById('msg_box').innerHTML = "<div class='alert alert-warning' role='alert'><span class='center-block'>" + xmlHttp.responseText + "</span></div>";
-            alert('Created Account');
-           location.reload();
-        }
-
-
-    }
-}
- 
-
-function deleteproduct() {
-    
-    
-    
     xmlHttp = GetXmlHttpObject();
     if (xmlHttp == null) {
         alert("Browser does not support HTTP Request");
         return;
     }
     
-     var msg = confirm("Do you want to DELETE this ! ");
-        if (msg == true) {
-    if (document.getElementById('user_name').value == "") {
-        document.getElementById('msg_box').innerHTML = "<div class='alert alert-warning' role='alert'><span class='center-block'>User  Not Selected</span></div>";
-        return false;
-    }
-    
-    
-
-    var url = "CheckUsers.php";
-    url = url + "?Command=" + "delete";
+    var msg = confirm("Do you want to DELETE this ! ");
+    if (msg == true) {
+        if (document.getElementById('user_name').value == "") {
+            document.getElementById('msg_box').innerHTML = "<div class='alert alert-warning' role='alert'><span class='center-block'>User  Not Selected</span></div>";
+            return false;
+        }
 
 
-    url = url + "&user_name=" + document.getElementById('user_name').value;
+        var url = "CheckUsers.php";
+        var params ="Command="+"delete";   
+        params=params+"&user_name="+document.getElementById('user_name').value; 
 
-    xmlHttp.onreadystatechange = dele;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
-        }  
+        xmlHttp.open("POST", url, true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("Content-length", params.length);
+        xmlHttp.setRequestHeader("Connection", "close");
+        xmlHttp.onreadystatechange=dele;
+        xmlHttp.send(params);
+
+        
+    }  
 }
 
 function dele() {
@@ -271,9 +157,10 @@ function dele() {
 
         if (xmlHttp.responseText == "Delete") {
             document.getElementById('msg_box').innerHTML = "<div class='alert alert-danger' role='alert'><span class='center-block'>Deleted</span></div>";
-            newent();
+            setTimeout("location.reload(true);", 1200);
         } else {
             document.getElementById('msg_box').innerHTML = "<div class='alert alert-warning' role='alert'><span class='center-block'>" + xmlHttp.responseText + "</span></div>";
         }
     }
 }
+ 

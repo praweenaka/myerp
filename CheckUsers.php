@@ -4,9 +4,9 @@ session_start();
 date_default_timezone_set('Asia/Colombo');
 $Command = "";
 
-if (isset($_GET['Command'])) {
+if (isset($_POST['Command'])) {
 
-    $Command = $_GET["Command"];
+    $Command = $_POST["Command"];
     include './connection_sql.php';
 }
 
@@ -15,14 +15,14 @@ if ($Command == "CheckUsers") {
 
     $ResponseXML = "";
     $ResponseXML .= "<salesdetails>";
-    $UserName = $_GET["UserName"];
-    $Password = $_GET["Password"]; 
+    $UserName = $_POST["UserName"];
+    $Password = $_POST["Password"]; 
     
     $sql = "SELECT * FROM user_mast WHERE user_name =  '" . $UserName . "' and password = '" . md5($Password) . "' ";
     $result = $conn->query($sql);
 
     if ($row = $result->fetch()) {
-//        if (true) {
+
 
         $sessionId = session_id();
         $_SESSION['sessionId'] = session_id();
@@ -31,12 +31,11 @@ if ($Command == "CheckUsers") {
         $_SESSION['UserName'] = $UserName; 
         $_SESSION['user_type'] = $row['user_type'];
         $_SESSION['CURRENT_USER'] = $UserName;
-       $_SESSION['company']='THT';
+        $_SESSION['company']='THT';
 
         $action = "ok";
         $cookie_name = "user";
         $cookie_value = $UserName;
-        //setcookie($cookie_name, $cookie_value, time() + (43200)); // 86400 = 1 day
 
         $token = substr(hash('sha512', mt_rand() . microtime()), 0, 50);
         $extime = time() + 100000;
@@ -53,13 +52,13 @@ if ($Command == "CheckUsers") {
         echo $action;
 
 
-       $time = date("H:i:s");
+        $time = date("H:i:s");
         // $time = date("g.i a");
         $today = date('Y-m-d');
         
-         $sql = "Insert into loging(Name,Date,Logon_Time,Sessioan_Id,ip) values ('" . $UserName . "','" . $today . "','" . $time . "','" . $_SESSION['sessionId'] . "','" . $ip . "')";
+        $sql = "Insert into loging(Name,Date,Logon_Time,Sessioan_Id,ip) values ('" . $UserName . "','" . $today . "','" . $time . "','" . $_SESSION['sessionId'] . "','" . $ip . "')";
         $conn->exec($sql);
-        // clearstatcache();
+        
     } else {
         $action = "not";
         $ResponseXML .= "<stat><![CDATA[" . $action . "]]></stat>";
@@ -70,22 +69,32 @@ if ($Command == "CheckUsers") {
 
 
 
-if ($_GET["Command"] == "save_inv") {
+if ($_POST["Command"] == "save_inv") {
 
+    try {
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $conn->beginTransaction();
+        $sql = "select * from user_mast where user_name='" . $_POST["user_name"] . "'";
+        $result = $conn->query($sql);
+        if ($row1 = $result->fetch()) {
+            exit("User Found...!!!");
+        }
 
-    $sql = "select * from user_mast where user_name='" . $_GET["user_name"] . "'";
-    $result = $conn->query($sql);
-    if ($row1 = $result->fetch()) {
-        echo "User Found !!!";
-    } else {
-        $sql = "insert into user_mast(user_name,user_type, password,password1) values ('" . $_GET["user_name"] . "', '" . $_GET["user_type"] . "','" . md5($_GET["password"]) . "', '" . $_GET["password"] . "')";
- 
+        $sql = "insert into user_mast(user_name,user_type, password,password1) values ('" . $_POST["user_name"] . "', '" . $_POST["user_type"] . "','" . md5($_POST["password"]) . "', '" . $_POST["password"] . "')";
+
         $result = $conn->query($sql); 
-             echo "Saved";
-             
-         $sql2 = "insert into entry_log(refno, username, docname, trnType, stime, sdate) values ('" . $_GET['user_name'] . "', '" . $_SESSION["CURRENT_USER"] . "', 'USER', 'SAVE', '" . date("Y-m-d H:i:s") . "', '" . date("Y-m-d") . "')";
-         $result2 = $conn->query($sql2);
+
+        $sql2 = "insert into entry_log(refno, username, docname, trnType, stime, sdate) values ('" . $_POST['user_name'] . "', '" . $_SESSION["CURRENT_USER"] . "', 'USER', 'SAVE', '" . date("Y-m-d H:i:s") . "', '" . date("Y-m-d") . "')";
+        $result2 = $conn->query($sql2);
+
+        $conn->commit();
+        echo "Saved";
+    } catch (Exception $e) {
+        $conn->rollBack();
+        echo $e;
     }
+
+    
 }
 
 if ($Command == "logout") {
@@ -99,31 +108,28 @@ if ($Command == "logout") {
         $conn->beginTransaction();
         $time = date("H:i:s");
         $sql2 = "update loging set Logout_Time = '" . $time . "'  where Sessioan_Id = '" . $_SESSION['sessionId']. "'"; 
-
-
         $result = $conn->query($sql2);
 
-        $conn->commit();
-        // echo "EDIT";
+        $conn->commit(); 
     } catch (Exception $e) {
         $conn->rollBack();
         echo $e;
     }
-     session_unset();
+    session_unset();
     session_destroy();
 
-   
+
 }
 
 
-if ($_GET["Command"] == "getdt") {
+if ($_POST["Command"] == "getdt") {
 
     $tb = "";
     $tb .= "<table class='table table-hover'>";
 
 
-    $sql = "select * from user_mast order by user_name desc";
-
+    $sql = "select * from user_mast order by user_name desc"; 
+ 
 
 
 
@@ -144,18 +150,24 @@ if ($_GET["Command"] == "getdt") {
     echo $tb;
 }
 
- 
 
-if ($_GET["Command"] == "delete") {
 
-    $sql = "delete from user_mast where user_name = '" . $_GET['user_name'] . "'";
+if ($_POST["Command"] == "delete") {
+ try {
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conn->beginTransaction();
+    $sql = "delete from user_mast where user_name = '" . $_POST['user_name'] . "'";
     $result = $conn->query($sql);
     
-    $sql2 = "insert into entry_log(refno, username, docname, trnType, stime, sdate) values ('" . $_GET['user_name'] . "', '" . $_SESSION["CURRENT_USER"] . "', 'USER', 'DELETE', '" . date("Y-m-d H:i:s") . "', '" . date("Y-m-d") . "')";
-         $result2 = $conn->query($sql2);
-
-//    $conn->commit();
+    $sql2 = "insert into entry_log(refno, username, docname, trnType, stime, sdate) values ('" . $_POST['user_name'] . "', '" . $_SESSION["CURRENT_USER"] . "', 'USER', 'DELETE', '" . date("Y-m-d H:i:s") . "', '" . date("Y-m-d") . "')";
+    $result2 = $conn->query($sql2);
+    
     echo "Delete";
+    $conn->commit(); 
+} catch (Exception $e) {
+    $conn->rollBack();
+    echo $e;
+}
 }
 
 ?>

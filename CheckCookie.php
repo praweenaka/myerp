@@ -17,30 +17,8 @@ function chk_cookie($UserName) {
         $ip = $_SERVER['REMOTE_ADDR'];
         $_SESSION['UserName'] = $UserName;    
         $_SESSION["CURRENT_USER"] = $UserName;
-        /*
-          $_SESSION['User_Type'] = $row['dev'];
-
-          if (is_null($row["sal_ex"]) == false) {
-          $_SESSION["CURRENT_REP"] = $row["sal_ex"];
-          } else {
-          $_SESSION["CURRENT_REP"] = "";
-          }
-         */
-//
-//        if (is_null($row["dlr_code"]) == false) {
-//            $_SESSION["CURRENT_DLR"] = $row["dlr_code"];
-//        } else {
-//            $_SESSION["CURRENT_DLR"] = "";
-//        }
-
-//        $_SESSION["CURRENT_DLR"] = "A111";
-
+        
         $action = "ok";
-//        $cookie_name = "user";
-//        $cookie_value = $UserName;
-//        setcookie($cookie_name, $cookie_value, time() + (43200), "/"); // 86400 = 1 day
-
-
 
         $cookie_name = "user";
         $cookie_value = $UserName;
@@ -50,17 +28,13 @@ function chk_cookie($UserName) {
         $domain = $_SERVER['HTTP_HOST'];
         setcookie('user', $cookie_value, $extime, "/", $domain);
 
-        //$ResponseXML .= "<stat><![CDATA[" . $action . "]]></stat>";
         $time = date("H:i:s");
         $today = date('Y-m-d');
         clearstatcache();
-//        $sql = "Insert into loging(Name,User_Type,Date,Logon_Time,Sessioan_Id,ip) values ('" . $UserName . "','" . $_SESSION['User_Type'] . "','" . $today . "','" . $time . "','" . $_SESSION['sessionId'] . "','" . $ip . "')";
-//        $conn->exec($sql);
+        
         return $action;
     } else {
-        //$ResponseXML .= "<stat><![CDATA[" . $action . "]]></stat>";
-        //$ResponseXML .= "</salesdetails>";
-        //echo $ResponseXML;
+
         return "not";
         echo 'not';
     }

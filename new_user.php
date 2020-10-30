@@ -8,13 +8,13 @@
         <form role="form" class="form-horizontal">
             <div class="box-body">
                 <div class="form-group">
-                    <a onclick="location.reload();" class="btn btn-default">
+                    <a onclick="newent();" class="btn btn-default">
                         <span class="fa fa-user-plus"></span> &nbsp; New
                     </a>
                     <a onclick="save_inv();" class="btn btn-success">
                         <span class="fa fa-save"></span> &nbsp; Save
                     </a> 
-                    <a onclick="deleteproduct();" class="btn btn-danger">
+                    <a onclick="deleteuser();" class="btn btn-danger">
                         <span class="fa fa-trash"></span> &nbsp; Delete
                     </a>
                 </div>

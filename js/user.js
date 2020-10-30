@@ -19,8 +19,7 @@ function GetXmlHttpObject()
     return xmlHttp;
 }
 
-
-// codes for log on button
+ 
 
 function IsValiedData()
 {
@@ -42,21 +41,24 @@ function IsValiedData()
         }
 
         var url = "CheckUsers.php";
+        var params ="Command="+"CheckUsers";   
+        params=params+"&UserName="+document.getElementById('txtUserName').value;
+        params=params+"&Password="+document.getElementById('txtPassword').value;
 
-        url = url + "?Command=" + "CheckUsers";
-        url = url + "&UserName=" + document.getElementById('txtUserName').value;
-        url = url + "&Password=" + document.getElementById('txtPassword').value;
-        //alert(url);
-        xmlHttp.onreadystatechange = CheckUsers;
-        xmlHttp.open("GET", url, true);
-        xmlHttp.send(null);
+        xmlHttp.open("POST", url, true);
+        xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("Content-length", params.length);
+        xmlHttp.setRequestHeader("Connection", "close");
+        xmlHttp.onreadystatechange=CheckUsers;
+        xmlHttp.send(params);
+
 
     }
 
 }
 
 
- 
+
 
 // logon button stateChanged
 function CheckUsers()
@@ -67,24 +69,24 @@ function CheckUsers()
     if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete")
     {
         var val = xmlHttp.responseText;
-    
+
         if (val == "ok") {
             location.href = "home.php";
         } else if (val == "Invalied Connection") {
             alert(xmlHttp.responseText);
         } else {
-           
+
             document.getElementById("txterror").innerHTML = "Invalied UserName or Password";
         }
     }
 }
 
 function showPostion(position) {
-    
+
     alert("dsf");
     alert(position.coords.latitude);
 }
- 
+
 function logout()
 {
     //alert("ok");
@@ -97,12 +99,15 @@ function logout()
     }
 
     var url = "CheckUsers.php";
+    var params ="Command="+"logout";    
 
-    url = url + "?Command=" + "logout";
+    xmlHttp.open("POST", url, true);
+    xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlHttp.setRequestHeader("Content-length", params.length);
+    xmlHttp.setRequestHeader("Connection", "close");
+    xmlHttp.onreadystatechange=logout_state_Changed;
+    xmlHttp.send(params);
 
-    xmlHttp.onreadystatechange = logout_state_Changed;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
 
 }
 
@@ -116,114 +121,6 @@ function logout_state_Changed()
 
 }
 
-
-
-function lock_acc()
-{
-
-
-    xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
-    {
-        alert("Browser does not support HTTP Request");
-        return;
-    }
-
-    var url = "CheckUsers.php";
-
-    url = url + "?Command=" + "lock_acc";
-    url = url + "&Calendar1=" + document.getElementById('Calendar1').value;
-
-    xmlHttp.onreadystatechange = lock_acc_Changed;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
-
-}
-
-
-function lock_acc_Changed()
-{
-    var XMLAddress1;
-
-
-
-    if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete")
-    {
-
-        //location.href="index.php";
-        alert(xmlHttp.responseText);
-
-    }
-
-}
-
-
-function updated()
-{
-
-
-    xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
-    {
-        alert("Browser does not support HTTP Request");
-        return;
-    }
-
-    var url = "CheckUsers.php";
-
-    url = url + "?Command=" + "updated";
-    url = url + "&txtcashpay=" + document.getElementById('txtcashpay').value;
-    url = url + "&txtchqPay=" + document.getElementById('txtchqPay').value;
-    url = url + "&txtdep=" + document.getElementById('txtdep').value;
-    url = url + "&txtJe=" + document.getElementById('txtJe').value;
-    url = url + "&txtBt=" + document.getElementById('txtBt').value;
-    url = url + "&txtRECCABOOK=" + document.getElementById('txtRECCABOOK').value;
-    url = url + "&DTfrom=" + document.getElementById('DTfrom').value;
-    url = url + "&DTTO=" + document.getElementById('DTTO').value;
-
-    alert(url);
-
-    xmlHttp.onreadystatechange = updated_Changed;
-    xmlHttp.open("GET", url, true);
-    xmlHttp.send(null);
-
-}
-
-
-function updated_Changed()
-{
-    var XMLAddress1;
-
-
-
-    if (xmlHttp.readyState == 4 || xmlHttp.readyState == "complete")
-    {
-
-        //location.href="index.php";
-        alert(xmlHttp.responseText);
-
-    }
-
-}
-//////////////////////////////////////////////////////////////////////////////////////////////
-
-function newuser()
-{
-    //alert("ok");
-
-    xmlHttp = GetXmlHttpObject();
-    if (xmlHttp == null)
-    {
-        alert("Browser does not support HTTP Request");
-        return;
-    }
-
-
-
-
-    location.href = "logon_users.php";
-
-}
 
 
 

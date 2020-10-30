@@ -7,7 +7,7 @@ require_once("./connection_sql.php");
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Assign Privileges</h3>
-             <h4 style="float: right;height: 3px;"><b id="time"></b></h4>
+            <h4 style="float: right;height: 3px;"><b id="time"></b></h4>
         </div>
         <form role="form" class="form-horizontal">
             <div class="box-body">
@@ -16,7 +16,7 @@ require_once("./connection_sql.php");
                     <a onclick="location.reload();" class="btn btn-default">
                         <span class="fa fa-user-plus"></span> &nbsp; New
                     </a>
-                    <a onclick="save_inv1();" class="btn btn-success">
+                    <a onclick="save_inv();" class="btn btn-success">
                         <span class="fa fa-save"></span> &nbsp; Save
                     </a>
 
@@ -41,14 +41,31 @@ require_once("./connection_sql.php");
                             ?>
                         </select>
                     </div>
+                    <label class="col-sm-2 control-label" for="txt_usernm"></label>
+                    <label class="col-sm-2 control-label" for="txt_usernm">Sample Name</label>
+                    <div class="col-sm-2">
+                      <select    onblur="sampleuser();" class=" form-control"  id="sam_user" name="sam_user" >
+                        <option value=""></option>
+                        <?php
+                        require_once("./connection_sql.php");
+
+                        $sql = "Select user_name from user_mast order by user_name";
+                        foreach ($conn->query($sql) as $row) {
+                            echo "<option value=\"" . $row["user_name"] . "\">" . $row["user_name"] . "</option>";
+                        }
+                        ?>
+                    </select>
+                    
                 </div>
 
-                <div id="privi_table">          
-                    <table class="table hidden" >
-                        <tr>
-                            <th>Form Name</th>
-                            <th>Category</th>
-                            <th>View</th>
+            </div>
+
+            <div id="privi_table">          
+                <table class="table hidden" >
+                    <tr>
+                        <th>Form Name</th>
+                        <th>Category</th>
+                        <th>View</th>
 <!--                            <th>Feed</th>
                             <th>Modify</th>
                             <th>Price Edit</th>
@@ -76,7 +93,7 @@ require_once("./connection_sql.php");
 
 </section>
 
-<script src="js/create_user.js"></script>
+<script src="js/user_permission.js"></script>
 
 
 

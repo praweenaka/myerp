@@ -18,48 +18,24 @@ include "header.php";
 if (isset($_GET['url'])) {
 
 
-    if ($_GET['url'] == "Customer") {
-        include_once './customer.php';      
-    }
 
-    
     if ($_GET['url'] == "new_user") {
         include_once './new_user.php';
     }
-    if ($_GET['url'] == "user_p") {
+    if ($_GET['url'] == "user_permission") {
         include_once './user_permission.php';
     }
-    if ($_GET['url'] == "change_password") {
-        include_once './change_password.php';
+    if ($_GET['url'] == "change_pass") {
+        include_once './change_pass.php';
+    }
+    if ($_GET['url'] == "addfiles") {
+        include_once './addfiles.php';
     }
 
-    if ($_GET['url'] == "create") {
-        include_once './create.php';
-    }
+
 //////////////////////////////////
 
-    if ($_GET['url'] == "medical") {
-        include_once './medical.php';      
-    }
-    if ($_GET['url'] == "medical_approve") {
-        include_once './medical_approve.php';      
-    }
-    if ($_GET['url'] == "category_master") {
-        include_once './category_master.php';      
-    }
-    if ($_GET['url'] == "pharamacy") {
-        include_once './pharamacy.php';      
-    }
-    if ($_GET['url'] == "mediitemmas") {
-        include_once './mediitemmas.php';      
-    }
-    
-    if ($_GET['url'] == "report") {
-        include_once './report.php';      
-    }
-    if ($_GET['url'] == "expenses") {
-        include_once './expense.php';      
-    }
+
 } else {
     include_once './fpage.php';
 }
