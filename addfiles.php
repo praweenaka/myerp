@@ -48,12 +48,13 @@
 
      }
  } 
+
+ 
  ?>
 </section>
 
 <script src="js/create_user.js"></script>
 
-<script>newent();</script>
 
 
 
