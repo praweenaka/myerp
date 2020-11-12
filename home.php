@@ -31,6 +31,9 @@ if (isset($_GET['url'])) {
     if ($_GET['url'] == "addfiles") {
         include_once './addfiles.php';
     }
+    if ($_GET['url'] == "fileview") {
+        include_once './fileview.php';
+    }
 
 
 //////////////////////////////////
@@ -45,20 +48,10 @@ include_once './footer.php';
 </body>
 </html>
 
-<!-- jQuery 2.2.3 -->
 
 <!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="bootstrap/js/bootstrap-multiselect.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script> 
 <script  type="text/javascript">
-
-    // $(function () {
-
-    // $(document).ready(function () {
-    //         $('#brand').multiselect();
-    // });
-
-    // });
 
 </script>
 <script type="text/javascript">
@@ -73,18 +66,14 @@ include_once './footer.php';
 include './autocomple_gl.php';
 ?>
 
-<!--<link rel="stylesheet" href="js/jquery-ui-1.12.1/jquery-ui.min.css" />
-    <script src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script> -->
 
-    <script src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <!-- <script src="js/comman.js"></script> -->
+<script src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<!-- <script src="js/comman.js"></script> -->
 
 
-    <!-- FastClick -->
-    <script src="plugins/fastclick/fastclick.js"></script>   <!-- minified -->
-    <!--<script src="plugins/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>-->
-    <!--<script src="plugins/recaptcha_4.2.0/index.php"></script>-->
-    <script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>   
+<script>
 
 // $(function() {
 // 	FastClick.attach(document.body);
