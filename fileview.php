@@ -71,7 +71,7 @@ include_once './connection_sql.php';
 
                             echo "<tr>               
                             <td onclick=\"invno_inv('" . $row['id'] . "', '" . $stname . "');\">" . $row['batch'] . "</a></td>
-                            <td onclick=\"invno_inv('" . $row['id'] . "', '" . $stname . "');\">" . $row["file"] . "</a></td>
+                            <td onclick=\"invno_inv('" . $row['id'] . "', '" . $stname . "');\"><a href=\"" . $row["file"] . "\" target=\"_blank\">view file</a></td>
                             <td onclick=\"invno_inv('" . $row['id'] . "', '" . $stname . "');\">" . $row['company'] . "</a></td>
                             <td onclick=\"invno_inv('" . $row['id'] . "', '" . $stname . "');\">" . $row['user'] . "</a></td>
                             <td onclick=\"invno_inv('" . $row['id'] . "', '" . $stname . "');\">" . $row['sdate'] . "</a></td>

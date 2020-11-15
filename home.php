@@ -34,6 +34,9 @@ if (isset($_GET['url'])) {
     if ($_GET['url'] == "fileview") {
         include_once './fileview.php';
     }
+    if ($_GET['url'] == "accountants") {
+        include_once './accountants.php';
+    }
 
 
 //////////////////////////////////
